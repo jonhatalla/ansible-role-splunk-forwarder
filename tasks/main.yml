@@ -22,7 +22,7 @@
   when: ansible_os_family == "RedHat"
 
 - name: Check if the packages has already been downlaoded
-  stat: 
+  stat:
     path: /tmp/{{ splunk_forwarder_deb }}
   register: splunk_deb
 
@@ -45,15 +45,15 @@
   when: ansible_os_family == "Debian"
 
 - name: Copy inputs file
-  template:
-    src: inputs.conf.j2
+  copy:
+    content: splunk_inputs_conf
     dest: /opt/splunkforwarder/etc/system/local/inputs.conf
     backup: yes
   tags: config_copy
 
 - name: Copy outputs file
-  template:
-    src: outputs.conf.j2
+  copy:
+    content: splunk_outputs_conf
     dest: /opt/splunkforwarder/etc/system/local/outputs.conf
     backup: yes
   tags: config_copy

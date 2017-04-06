@@ -17,3 +17,22 @@ splunk_forwarder_sourcetype: "nginx"
 splunk_forwarder_logs: |
   [monitor:///var/log/nginx/access.log*]
   [monitor:///var/log/nginx/error.log*]
+
+splunk_inputs_conf: |
+  [default]
+  index = {{ splunk_forwarder_index }}
+
+  blacklist = \.bz2$
+  ignoreOlderThan = 7d
+  sourcetype = {{ splunk_forwarder_sourcetype }}
+  {{ splunk_forwarder_logs }}
+
+splunk_outputs_conf: |
+  [tcpout]
+  defaultGroup = splunk
+  disabled = false
+
+  [tcpout:splunk]
+  server = {{ splunk_forwarder_indexer }}
+
+  [tcpout-server://{{ splunk_forwarder_indexer }}]
